@@ -10,19 +10,16 @@ from django.conf import settings
 
 stripe.api_key = settings.STRIPE_API_KEY
 
-# Create your views here.
 def checkout_view(request):
     intent = stripe.PaymentIntent.create(
       amount=1999,
       currency='usd',
-      # Verify your integration in this guide by including this parameter
       metadata={'integration_check': 'accept_a_payment'},
     )
     amount_displayed = Decimal(str(intent.amount/100)).quantize(Decimal('.01'))
     dict = {'client_secret':intent.client_secret,'amount_displayed':amount_displayed,'publishable_key':settings.STRIPE_PUBLISHABLE_KEY}
     return render(request,'stripe_payment_app/checkout.html',context=dict)
 
-# Using Django
 @csrf_exempt
 def webhook_view(request):
   payload = request.body
@@ -44,7 +41,6 @@ def webhook_view(request):
 
   # Handle the event
   if event.type == 'payment_intent.succeeded':
-    # stripe_data = json.loads(payment_intent)
     print('PaymentIntent was successful!')
     creation_date_unix = payment_intent['created']
     creation_date = datetime.utcfromtimestamp(creation_date_unix).strftime('%Y-%m-%d %H:%M:%S')

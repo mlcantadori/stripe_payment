@@ -1,5 +1,4 @@
-// Set your publishable key: remember to change this to your live publishable key in production
-// See your keys here: https://dashboard.stripe.com/account/apikeys
+// Set your publishable key
 var main_script = document.getElementById('main-script');
 var publishable_key = main_script.getAttribute("publishable_key");
 var stripe = Stripe(publishable_key);
@@ -63,11 +62,6 @@ form.addEventListener('submit', function(ev) {
         document.querySelector("button").disabled = true;
         displaySuccess.textContent = 'Payment was successful!';
         displayFeedback.textContent = "(that's what she said!)";
-        // Show a success message to your customer
-        // There's a risk of the customer closing the window before callback
-        // execution. Set up a webhook or plugin to listen for the
-        // payment_intent.succeeded event that handles any business critical
-        // post-payment actions.
       }
     }
   });
